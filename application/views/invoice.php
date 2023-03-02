@@ -77,7 +77,7 @@
                   <div class="text-base text-slate-500">Total Amount</div>
                   <div class="text-xl text-primary font-medium mt-2">Rp. <?= number_format($total, 0, ',', '.') ?></div>
               </div>
-              <button class="btn btn-success shadow-md mr-2" id="tombol-bayar" data-amount="<?= $total ?>">Bayar</button>
+              <button class="btn btn-success shadow-md mr-2" id="tombol-bayar" data-order='<?= $invoice->order_id ?>' data-amount="<?= $total ?>">Bayar</button>
           </div>
       </div>
 
@@ -93,6 +93,7 @@
 
   <script>
       $('#tombol-bayar').click(function(event) {
+          var order = $(this).data('order');
           var grossamount = $(this).data('amount');
           event.preventDefault();
           $(this).attr("disabled", "disabled");
@@ -101,6 +102,7 @@
               url: '<?= site_url() ?>/snap/token',
               cache: false,
               data: {
+                  order: order,
                   grossamount: grossamount
               },
 

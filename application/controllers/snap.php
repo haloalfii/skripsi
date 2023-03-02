@@ -34,24 +34,32 @@ class Snap extends CI_Controller
 		$this->load->view('checkout_snap');
 	}
 
-	public function token($order_id = null)
+	public function token()
 	{
 		$grossamount = $this->input->get('grossamount');
-		$url = $order_id;
-		$product = $this->model_invoice->get_id_invoice('INV-104939107');
+		$order = $this->model_invoice->get_id_invoice($this->input->get('order'));
 
 		// Required
 		$transaction_details = array(
-			'order_id' => rand(),
+			'order_id' => $order->order_id,
 			'gross_amount' => $grossamount, // no decimal allowed for creditcard
+		);
+
+		$shipping_address = array(
+			'first_name'    => $order->name,
+			'address'       => $order->alamat,
+			'city'          => $order->city,
+			'postal_code'   => $order->kode_pos,
+			'phone'         => $order->mobile_phone,
+			'country_code'  => 'IDN'
 		);
 
 		// Optional
 		$customer_details = array(
-			'first_name'    => $url,
-			'email'         => 'sdasda@gmail.com',
-			'phone'         => '013234',
-			'shipping_address' => 'sdwtrt',
+			'first_name'    	=> $order->name,
+			'email'         	=> $order->email,
+			'phone'         	=> $order->mobile_phone,
+			'shipping_address'	=> $shipping_address
 		);
 
 		// Data yang akan dikirim untuk request redirect_url.
